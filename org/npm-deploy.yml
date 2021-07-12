@@ -1,0 +1,8 @@
+---
+- hosts: "{{ deployIp }}"
+  remote_user: root
+  tasks:
+    # 删除目标服务器上的dist文件
+    - name: delete remote host old dist file
+      file:
+        path:
