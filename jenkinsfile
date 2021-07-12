@@ -5,7 +5,7 @@
 def tools = new org.devops.tools()
 
 String buildType = "${env.buildType}"
-String buildShell = "${env.buildShell}"
+String repositoryUrl = "${env.repositoryUrl}"
 String deployHosts = "${env.deployHosts}"
 String srcUrl = "${env.srcUrl}"
 String branchName = "${env.branchName}"
@@ -48,7 +48,7 @@ pipeline {
             steps {
                 script {
                     tools.PrintMes("构建代码", "green")
-                    tools.build(buildType, buildShell)
+                    tools.build(buildType, repositoryUrl)
                 }
             }
         }
@@ -57,7 +57,7 @@ pipeline {
             steps {
                 script {
                     tools.PrintMes("部署代码", "green")
-                    tools.deploy(deployHosts)
+                    tools.deploy(deployHosts, buildType)
                 }
             }
         }

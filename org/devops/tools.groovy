@@ -35,9 +35,25 @@ def buildHome(buildType) {
 }
 
 //构建类型
-def build(buildType, buildShell) {
+def build(buildType, repositoryUrl) {
+    def jarName = sh returnStdout: true, script: 'cd target;ls *.jar'
+    jarName = jarName - '\n'
+    def pom = readMavenPom file: 'pom.xml'
+    pomVersion = "${pom.version}"
+    pomArtifact = "${pom.artifactId}"
+    pomPackaging = "${pom.packaging}"
+    pomGroupId = "${pom.groupId}"
+    println("${pomGroupId}-${pomArtifact}-${pomVersion}-${pomPackaging}")
     def home = buildHome(buildType)
-    sh "${home}/bin/${buildType}  ${buildShell}"
+
+    sh """
+        ${home}/bin/${buildType}  deploy:deploy-file -Dmaven.test.skip=true \
+                                  -Dfile=${jarName} -DgroupId=${pomGroupId} \
+                                  -DartifactId=${pomArtifact} -Dversion=${pomVersion}  \
+                                  -Dpackaging=${pomPackaging} -DrepositoryId=maven-hostd \
+                                  -Durl=${repositoryUrl}
+
+    """
 }
 
 //获取POM中的坐标
