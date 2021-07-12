@@ -62,7 +62,6 @@ def build(buildType, repositoryUrl) {
                                   -DartifactId=${pomArtifact} -Dversion=${pomVersion}  \
                                   -Dpackaging=${pomPackaging} -DrepositoryId=maven-hostd \
                                   -Durl=${repositoryUrl}
-
     """
 }
 
