@@ -58,7 +58,7 @@ def GetGav() {
 def deploy(deployHosts) {
     GetGav()
     withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'password', usernameVariable: 'username')]) {
-        def repository = 'http://192.168.1.133:82/repository/maven-snapshots/'
+        def repository = 'http://192.168.1.133:8081/repository/maven-public'
         println('开始部署')
         ansiblePlaybook(
                 installation: 'Ansible',
