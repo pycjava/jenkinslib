@@ -9,8 +9,8 @@
       maven_artifact:
         group_id: "{{ groupId }}"
         artifact_id: "{{ artifactId }}"
-        repository_url: '{{ repository }}'
-        dest: "/var/app/{{ artifactId }}/"
+        repository_url: "{{ repository }}"
+        dest: "/app/jar/{{ artifactId }}/"
         username: "{{ username }}"
         password: "{{ password }}"
         version: "{{ appVersion }}"
@@ -52,8 +52,5 @@
       with_items: "{{ killed_processes.results | select('failed') | map(attribute='item') | list }}"
 
     # 启动新的jar包
-    - name: start wechat-api
-      shell: "nohup java -jar /var/app/{{ artifactId }}-{{ appVersion }}.jar --name={{ artifactId }}  &"
-
-
-
+    - name: start jar
+      shell: "nohup java -jar -Xms265M -Xmx512M -Dfile.encoding=utf-8 -Dsun.jnu.encoding=UTF-8 -Duser.timezone=Asia/ShangHai /app/jar/{{ artifactId }}/{{ artifactId }}-{{ appVersion }}.jar > /app/jar/logs/{{ artifactId }}-{{ appVersion }}-app.log 2>&1 &"
