@@ -16,7 +16,7 @@ def checkOut(srcUrl, branchName) {
               doGenerateSubmoduleConfigurations: false,
               extensions                       : [],
               submoduleCfg                     : [],
-              userRemoteConfigs                : [[credentialsId: '0fb2d9d5-ee9e-4901-bf65-9a613a679871', url: "${srcUrl}"]]])
+              userRemoteConfigs                : [[credentialsId: '0fb2d9d5-ee9e-4901-bf65-9a613a679871', url: "${srcUrl}"]]]) //credentialsId jenkins凭据模式
 }
 
 def sonarScan(buildType) {
@@ -58,7 +58,7 @@ def GetGav() {
 def deploy(deployHosts) {
     GetGav()
     withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'password', usernameVariable: 'username')]) {
-        def repository = 'http://192.168.1.133:8081/repository/maven-public'
+        def repository = 'http://192.168.1.133:8081/repository/maven-releases/'     // nexus maven仓库地址
         println('开始部署')
         ansiblePlaybook(
                 installation: 'Ansible',
