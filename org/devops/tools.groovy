@@ -19,11 +19,21 @@ def checkOut(srcUrl, branchName) {
               userRemoteConfigs                : [[credentialsId: '0fb2d9d5-ee9e-4901-bf65-9a613a679871', url: "${srcUrl}"]]]) //credentialsId jenkins凭据模式
 }
 
-def sonarScan(buildType) {
-    def home = buildHome(buildType)
-    withSonarQubeEnv('sonarqube') {
+def sonarScan(sonarServer, projectName, projectDesc, projectPath, branchName) {
+    def servers = ['test':'sonarqube-test', 'prod':'sonarqube-prod']
+    withSonarQubeEnv("${servers[sonarServer]}") {
         // If you have configured more than one global server connection, you can specify its name
-        sh "${home}/bin/${buildType} clean verify  -Dmaven.test.skip=true sonar:sonar"
+        //sh "${home}/bin/${buildType} clean verify  -Dmaven.test.skip=true sonar:sonar"
+        def scannerHome = '/home/jenkins/buildtools/sonar-scanner-3.2.0.1227-linux/'
+        def sonarDate = sh  returnStdout: true, script: 'date  +%Y%m%d%H%M%S'
+        sonarDate = sonarDate - '\n'
+        sh """
+            ${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=${projectName} \
+            -Dsonar.projectName=${projectName} -Dsonar.projectVersion=${sonarDate} -Dsonar.ws.timeout=30 \
+            -Dsonar.projectDescription=${projectDesc} -Dsonar.links.homepage=http://www.baidu.com \
+            -Dsonar.sources=${projectPath} -Dsonar.sourceEncoding=UTF-8 -Dsonar.java.binaries=target/classes \
+            -Dsonar.java.test.binaries=target/test-classes -Dsonar.java.surefire.report=target/surefire-reports  -Dsonar.branch.name=${branchName} -X
+        """
     }
 }
 

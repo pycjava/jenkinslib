@@ -9,13 +9,15 @@ String repositoryUrl = "${env.repositoryUrl}"
 String deployHosts = "${env.deployHosts}"
 String srcUrl = "${env.srcUrl}"
 String branchName = "${env.branchName}"
+String sonarServer = "${env.sonarServer}"
+String projectName = "${env.projectName}"
+String projectDesc = "${env.projectDesc}"
+String projectPath = "${env.projectPath}"
 
 
 //Pipeline
 pipeline {
-    agent {
-        label 'slave1'
-    }
+    agent any
     options {
         timestamps()  //日志会有时间
         skipDefaultCheckout()  //删除隐式checkout scm语句
@@ -39,7 +41,7 @@ pipeline {
             steps {
                 script {
                     tools.PrintMes("代码扫描", "green")
-                    tools.sonarScan(buildType)
+                    tools.sonarScan(sonarServer,projectName,projectDesc,projectPath,branchName)
                 }
             }
         }
