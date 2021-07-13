@@ -44,7 +44,6 @@ def buildHome(buildType) {
 def build(buildType, buildShell) {
     def home = buildHome(buildType)
     sh "${home}/bin/${buildType}  ${buildShell}"
-    """
 }
 
 //获取POM中的坐标
