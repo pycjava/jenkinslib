@@ -2,7 +2,16 @@
 - hosts: "{{ deployIp }}"
   remote_user: root
   tasks:
-    # 删除目标服务器上的dist文件
-    - name: delete remote host old dist file
-      file:
-        path:
+    - file: "path=/app/jar/{{ artifactId }} state=directory"
+      delegate_to: localhost
+    - name: copy to dest
+      copy:
+        src: "/app/jar/{{ artifactId }}/"
+        dest: "/app/jar/{{ artifactId }}/"
+    - name: delete local package
+      file: "path=/var/app/{{ artifactId }} state=absent force=yes"
+      delegate_to: localhost
+    - name: restart nginx server
+      service:
+        name: nginx
+        state: restarted

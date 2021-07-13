@@ -2,23 +2,12 @@
 - hosts: "{{ deployIp }}"
   remote_user: root
   tasks:
-    - file: "path=/var/app/{{ artifactId }} state=directory"
-      delegate_to: localhost
-      #从nexus中获取jar包
-    - name: get jar from nexus
-      maven_artifact:
-        group_id: "{{ groupId }}"
-        artifact_id: "{{ artifactId }}"
-        repository_url: "{{ repository }}"
-        dest: "/app/jar/{{ artifactId }}/"
-        username: "{{ username }}"
-        password: "{{ password }}"
-        version: "{{ appVersion }}"
+    - file: "path=/app/jar/{{ artifactId }} state=directory"
       delegate_to: localhost
     - name: copy to dest
       copy:
-        src: "/var/app/{{ artifactId }}/"
-        dest: "/var/app/"
+        src: "/app/jar/{{ artifactId }}/"
+        dest: "/app/jar/{{ artifactId }}/"
     - name: delete local package
       file: "path=/var/app/{{ artifactId }} state=absent force=yes"
       delegate_to: localhost

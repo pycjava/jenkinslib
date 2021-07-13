@@ -58,37 +58,28 @@ def GetGav() {
 
 def deploy(deployHosts, buildType) {
     GetGav()
-    withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'password', usernameVariable: 'username')]) {
-        def repository = 'http://192.168.1.133:8081/repository/maven-releases/'     // nexus maven仓库地址
-        println('开始部署')
-        if (buildType == 'npm') {
-            ansiblePlaybook(
-                installation: 'Ansible',
-                playbook: '/etc/ansible/npm-deploy.yml',
-                extraVars: [
-                        groupId:"${pomGroupId}",
-                        artifactId:"${pomArtifact}",
-                        appVersion:"${pomVersion}",
-                        deployIp:"${deployHosts}",
-                        repository:"${repository}",
-                        username:"${username}",
-                        password:"${password}"
-                ]
-            )
-        } else {
-            ansiblePlaybook(
-                installation: 'Ansible',
-                playbook: '/etc/ansible/jar-deploy.yml',
-                extraVars: [
-                        groupId:"${pomGroupId}",
-                        artifactId:"${pomArtifact}",
-                        appVersion:"${pomVersion}",
-                        deployIp:"${deployHosts}",
-                        repository:"${repository}",
-                        username:"${username}",
-                        password:"${password}"
-                ]
-            )
-        }
+    println('开始部署')
+    if (buildType == 'npm') {
+        ansiblePlaybook(
+            installation: 'Ansible',
+            playbook: '/etc/ansible/npm-deploy.yml',
+            extraVars: [
+                    groupId:"${pomGroupId}",
+                    artifactId:"${pomArtifact}",
+                    appVersion:"${pomVersion}",
+                    deployIp:"${deployHosts}"
+            ]
+        )
+    } else {
+        ansiblePlaybook(
+            installation: 'Ansible',
+            playbook: '/etc/ansible/jar-deploy.yml',
+            extraVars: [
+                    groupId:"${pomGroupId}",
+                    artifactId:"${pomArtifact}",
+                    appVersion:"${pomVersion}",
+                    deployIp:"${deployHosts}"
+            ]
+        )
     }
 }
