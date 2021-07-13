@@ -19,8 +19,9 @@ def checkOut(srcUrl, branchName) {
               userRemoteConfigs                : [[credentialsId: '0fb2d9d5-ee9e-4901-bf65-9a613a679871', url: "${srcUrl}"]]]) //credentialsId jenkins凭据模式
 }
 
-def sonarScan(sonarServer, projectName, projectDesc, projectPath, branchName) {
+def sonarScan(sonarServer, buildType) {
     def servers = ['test':'sonarqube-scanner', 'prod':'sonarqube-scanner']
+    def home = buildHome(buildType)
     withSonarQubeEnv("${servers[sonarServer]}") {
         // If you have configured more than one global server connection, you can specify its name
         //sh "${home}/bin/${buildType} clean verify  -Dmaven.test.skip=true sonar:sonar"
