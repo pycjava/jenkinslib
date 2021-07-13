@@ -26,7 +26,6 @@ def sonarScan(sonarServer, projectName, projectDesc, projectPath, branchName) {
         //sh "${home}/bin/${buildType} clean verify  -Dmaven.test.skip=true sonar:sonar"
         // def scannerHome = '/home/jenkins/buildtools/sonar-scanner-4.6.2.2472-linux/'
         // def sonarDate = sh  returnStdout: true, script: 'date  +%Y%m%d%H%M%S'
-        sonarDate = sonarDate - '\n'
         sh """
             ${home}/bin/${buildType} clean verify  -Dmaven.test.skip=true sonar:sonar
         """
