@@ -24,8 +24,8 @@ def sonarScan(sonarServer, projectName, projectDesc, projectPath, branchName) {
     withSonarQubeEnv("${servers[sonarServer]}") {
         // If you have configured more than one global server connection, you can specify its name
         //sh "${home}/bin/${buildType} clean verify  -Dmaven.test.skip=true sonar:sonar"
-        def scannerHome = '/home/jenkins/buildtools/sonar-scanner-4.6.2.2472-linux/'
-        def sonarDate = sh  returnStdout: true, script: 'date  +%Y%m%d%H%M%S'
+        // def scannerHome = '/home/jenkins/buildtools/sonar-scanner-4.6.2.2472-linux/'
+        // def sonarDate = sh  returnStdout: true, script: 'date  +%Y%m%d%H%M%S'
         sonarDate = sonarDate - '\n'
         sh """
             ${home}/bin/${buildType} clean verify  -Dmaven.test.skip=true sonar:sonar
@@ -41,23 +41,9 @@ def buildHome(buildType) {
 }
 
 //构建类型
-def build(buildType, repositoryUrl) {
-    def jarName = sh returnStdout: true, script: 'cd target;ls *.jar'
-    jarName = jarName - '\n'
-    def pom = readMavenPom file: 'pom.xml'
-    pomVersion = "${pom.version}"
-    pomArtifact = "${pom.artifactId}"
-    pomPackaging = "${pom.packaging}"
-    pomGroupId = "${pom.groupId}"
-    println("${pomGroupId}-${pomArtifact}-${pomVersion}-${pomPackaging}")
+def build(buildType, buildShell) {
     def home = buildHome(buildType)
-
-    sh """
-        ${home}/bin/${buildType}  deploy:deploy-file -Dmaven.test.skip=true \
-                                  -Dfile=${jarName} -DgroupId=${pomGroupId} \
-                                  -DartifactId=${pomArtifact} -Dversion=${pomVersion}  \
-                                  -Dpackaging=${pomPackaging} -DrepositoryId=maven-hostd \
-                                  -Durl=${repositoryUrl}
+    sh "${home}/bin/${buildType}  ${buildShell}"
     """
 }
 
