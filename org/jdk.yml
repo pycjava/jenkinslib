@@ -1,8 +1,6 @@
 ---
 - hosts: "{{ hosts_name }}"
-  user: rayduan
-  become: yes
-  become_method: sudo
+  remote_user: root
   tasks:
     - name: copy jdk to remote servers
       copy: src=/tmp/jdk-11.0.4_linux-x64_bin.tar.gz  dest=/usr/local
