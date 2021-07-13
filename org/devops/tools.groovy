@@ -24,9 +24,6 @@ def sonarScan(sonarServer, buildType) {
     def home = buildHome(buildType)
     withSonarQubeEnv("${servers[sonarServer]}") {
         // If you have configured more than one global server connection, you can specify its name
-        //sh "${home}/bin/${buildType} clean verify  -Dmaven.test.skip=true sonar:sonar"
-        // def scannerHome = '/home/jenkins/buildtools/sonar-scanner-4.6.2.2472-linux/'
-        // def sonarDate = sh  returnStdout: true, script: 'date  +%Y%m%d%H%M%S'
         sh "${home}/bin/${buildType} clean verify  -Dmaven.test.skip=true sonar:sonar"
     }
 }
