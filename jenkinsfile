@@ -10,9 +10,6 @@ String deployHosts = "${env.deployHosts}"
 String srcUrl = "${env.srcUrl}"
 String branchName = "${env.branchName}"
 String sonarServer = "${env.sonarServer}"
-String projectName = "${env.projectName}"
-String projectDesc = "${env.projectDesc}"
-String projectPath = "${env.projectPath}"
 
 
 //Pipeline
