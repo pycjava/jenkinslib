@@ -5,7 +5,7 @@
 def tools = new org.devops.tools()
 
 String buildType = "${env.buildType}"
-String repositoryUrl = "${env.repositoryUrl}"
+String buildShell = "${env.buildShell}"
 String deployHosts = "${env.deployHosts}"
 String srcUrl = "${env.srcUrl}"
 String branchName = "${env.branchName}"
